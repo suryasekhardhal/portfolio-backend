@@ -9,8 +9,8 @@ export const contact = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
   
-  const data = await sendEmail({ name, email, message });
+   await sendEmail({ name, email, message });
   res
     .status(200)
-    .json(new ApiResponse(200, data, "Message sent successfully"));
+    .json(new ApiResponse(200, null, "Message sent successfully"));
 });
