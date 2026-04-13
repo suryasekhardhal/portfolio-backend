@@ -1,28 +1,16 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmail = async ({ name, email, message }) => {
- const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // VERY IMPORTANT
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
-  },
-});
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    replyTo: email,
+  await resend.emails.send({
+    from: "Portfolio <onboarding@resend.dev>", // default works without domain setup
     to: process.env.EMAIL_USER,
-    subject: `Portfolio Contact from ${name}`,
+    subject: `New Contact Message from ${name}`,
     text: `
-      Name: ${name}
-      Email: ${email}
-      Message: ${message}
+Name: ${name}
+Email: ${email}
+Message: ${message}
     `,
-  };
-
-  await transporter.sendMail(mailOptions);
+  });
 };
